@@ -1,14 +1,19 @@
-CREATE TABLE UserModel (
-                           userId INT IDENTITY(1,1) PRIMARY KEY,
-                           merchantId VARCHAR(50),
-                           merchantName VARCHAR(50),
-                           firstName VARCHAR(50),
-                           lastName VARCHAR(50),
-                           passwordHash VARCHAR(255) NOT NULL,
-                           mobile VARCHAR(15),
-                           adminId VARCHAR(15),
-                           role VARCHAR(20) NOT NULL,
+CREATE TABLE user_model (
+    merchant_id     VARCHAR(50)  NOT NULL,
+    username        VARCHAR(50)  NOT NULL,
+    first_name      VARCHAR(50),
+    last_name       VARCHAR(50),
+    merchant_name   VARCHAR(100),
+    password        VARCHAR(255) NOT NULL,
+    mobile          VARCHAR(15),
+    admin_id        VARCHAR(50),
+    role            VARCHAR(20)  NOT NULL,
+    message         VARCHAR(255),
+    status          VARCHAR(20),
+    token           VARCHAR(2000),
 
-                           CONSTRAINT chk_user_role
-                               CHECK (role IN ('ADMIN', 'USER'))
+    CONSTRAINT pk_user_model PRIMARY KEY (merchant_id),
+    CONSTRAINT uk_user_model_username UNIQUE (username),
+    CONSTRAINT chk_user_role
+        CHECK (role IN ('ROLE_ADMIN', 'ROLE_MERCHANT'))
 );

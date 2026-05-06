@@ -13,32 +13,46 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Table(name = "user_model")
 @Data
 public class UserModel implements UserDetails {
     @Id
+    @Column(name = "merchant_id")
     private String merchantID;
-    @Column
+
+    @Column(name = "first_name")
     private String firstName;
-    @Column
+
+    @Column(name = "last_name")
     private String lastName;
-    @Column
+
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
-    @Column
+
+    @Column(name = "merchant_name")
     private String merchantName;
-    @Column
+
+    @Column(name = "password", nullable = false)
     private String password;
-    @Column
+
+    @Column(name = "mobile")
     private String mobile;
-    @Column
-    private String adminId;//optional
-    @Column
+
+    @Column(name = "admin_id")
+    private String adminId;
+
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
-    @Column
+
+    @Column(name = "message")
     private String message;
-    @Column
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private AuthStatus status;
-    @Column
+
+    @Column(name = "token", length = 2000)
     private String token;
 
 

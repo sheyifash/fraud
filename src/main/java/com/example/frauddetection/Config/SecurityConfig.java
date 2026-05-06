@@ -1,6 +1,7 @@
 package com.example.frauddetection.Config;
 
 import com.example.frauddetection.Service.MerchantDetailService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,11 +41,18 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        // ADMIN‑only endpoint for viewing flagged transactions
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/transactions/flagged").hasRole("ADMIN")
-
-                        // everything else is public
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().write("""
+                                {"status":401,"error":"Unauthorized","message":"Authentication required"}
+                            """);
+                        })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

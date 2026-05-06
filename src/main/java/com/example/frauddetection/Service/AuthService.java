@@ -39,7 +39,7 @@ private final UserRepo userRepo;
             String encodedPassword = passwordEncoder.encode(req.getPassword());
             user.setPassword(encodedPassword);
             user.setMerchantName(req.getMerchantName());
-            if (req.getAdminId().isBlank()) {
+            if (req.getAdminId() == null || req.getAdminId().isBlank()) {
                 user.setRole(Role.ROLE_MERCHANT);
             }
             else {

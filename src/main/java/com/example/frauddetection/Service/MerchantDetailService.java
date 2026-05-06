@@ -22,20 +22,10 @@ public class MerchantDetailService implements UserDetailsService {
         UserModel user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        System.out.println("user in detail service" + user);
-        System.out.println(user.getRole().name());
-        // Map your UserModel to Spring Security's UserDetails
-//        return org.springframework.security.core.userdetails.User
-//                .withUsername(user.getUsername())
-//                .password(user.getPassword())
-//                .authorities(new SimpleGrantedAuthority(user.getRole().name()))
-//                .build();
-
         return User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .roles("ADMIN")
+                .authorities(new SimpleGrantedAuthority(user.getRole().name()))
                 .build();
     }
-
 }

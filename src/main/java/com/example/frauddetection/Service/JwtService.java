@@ -47,23 +47,18 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-
-//         store roles as simple list, e.g. ["ADMIN"]
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)        // e.g. "ROLE_ADMIN"
+                .map(GrantedAuthority::getAuthority)
                 .toList();
-//
-        System.out.println("user details"+ userDetails.getAuthorities());
 
-        System.out.println("roles" + roles);
-        claims.put("roles", "ADMIN");
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", roles);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24h
+                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

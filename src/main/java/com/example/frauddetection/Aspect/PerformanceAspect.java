@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PerformanceAspect {
 
-    @Around("execution(* com.example.frauddetection.service.*.*(..))")
+    @Around("execution(* com.example.frauddetection.Service.*.*(..))")
     public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 
         long start = System.currentTimeMillis();

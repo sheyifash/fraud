@@ -3,6 +3,7 @@ package com.example.frauddetection.Dto;
 import com.example.frauddetection.Enum.Role;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -18,7 +19,7 @@ public class RegistrationReq {
     private String merchantName;
     @NotBlank (message = "password is required")
     private String password;
-    @NotBlank (message = "mobile number is required")
+    @NotNull(message = "mobile number is required")
     private String mobile;
     private String adminId;//optional
     private Role role;

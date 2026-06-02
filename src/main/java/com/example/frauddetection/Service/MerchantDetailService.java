@@ -19,13 +19,7 @@ public class MerchantDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserModel user = userRepository.findByUsername(username)
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        return User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .authorities(new SimpleGrantedAuthority(user.getRole().name()))
-                .build();
     }
 }

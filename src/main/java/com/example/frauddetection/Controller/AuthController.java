@@ -2,6 +2,7 @@ package com.example.frauddetection.Controller;
 
 import com.example.frauddetection.Dto.*;
 import com.example.frauddetection.Service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +18,12 @@ public class AuthController {
         this.authService = authService;
     }
     @PostMapping("/register")
-    public ResponseEntity<RegistrationResp> register(@RequestBody RegistrationReq req){
+    public ResponseEntity<RegistrationResp> register(@Valid @RequestBody RegistrationReq req){
         RegistrationResp resp = authService.register(req);
         return  ResponseEntity.ok(resp);
     }
     @PostMapping("/logIn")
-    public ResponseEntity<LogInResp> logIn(@RequestBody LogInReq req){
+    public ResponseEntity<LogInResp> logIn( @Valid @RequestBody LogInReq req){
         LogInResp resp = authService.login(req);
         return ResponseEntity.ok(resp);
     }

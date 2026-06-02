@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class TransactionRequest {
     @NotBlank (message = "Card No. is required")
     private String cardNo;
-    @NotBlank (message = "amount is required")
+    @NotNull (message = "amount is required")
     private BigDecimal amount;
     @NotBlank (message = "merchant name is required")
     private String merchantName;

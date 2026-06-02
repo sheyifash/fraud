@@ -35,7 +35,7 @@ public class UserModel implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "mobile")
+    @Column(name = "mobile", nullable = false)
     private String mobile;
 
     @Column(name = "admin_id")
@@ -60,4 +60,5 @@ public class UserModel implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
+
 }

@@ -3,6 +3,7 @@ package com.example.frauddetection.Controller;
 import com.example.frauddetection.Dto.TransactionRequest;
 import com.example.frauddetection.Dto.TransactionResponse;
 import com.example.frauddetection.Service.TransactionService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class TransactionController {
 
     @PostMapping("/sendpayment")
         public ResponseEntity<TransactionResponse> sendPayment(
-                @RequestBody TransactionRequest request) {
+              @Valid @RequestBody TransactionRequest request) {
 
             TransactionResponse response = transactionService.sendPayment(request);
             return ResponseEntity.ok(response);

@@ -10,6 +10,10 @@ import com.example.frauddetection.Enum.Role;
 import com.example.frauddetection.Exception.UserAlreadyExists;
 import com.example.frauddetection.Mapper.RegistrationMapper;
 import com.example.frauddetection.Repo.UserRepo;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +23,16 @@ import java.util.UUID;
 
 @Service
 public class AuthService {
-private final JwtService jwtService;
-private final PasswordEncoder passwordEncoder;
-private final UserRepo userRepo;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepo userRepo;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthService(JwtService jwtService, PasswordEncoder passwordEncoder, UserRepo userRepo) {
+    public AuthService(JwtService jwtService, PasswordEncoder passwordEncoder, UserRepo userRepo, AuthenticationManager authenticationManager) {
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.userRepo = userRepo;
+        this.authenticationManager = authenticationManager;
     }
         public RegistrationResp register(RegistrationReq req) {
             if (userRepo.existsByUsername(req.getUsername())) {
@@ -52,12 +58,19 @@ private final UserRepo userRepo;
         }
 
         public LogInResp login(LogInReq req) {
-            UserModel user = (UserModel) userRepo.findByUsername(req.getUsername())
-                    .orElseThrow(() -> new RuntimeException("Invalid username or password"));
-            if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
-                throw new RuntimeException("Invalid username or password");
-            }
-            String token = jwtService.generateToken(user);
+
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            req.getUsername(),
+                            req.getPassword()
+                    )
+            );
+
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            assert userDetails != null;
+            String token = jwtService.generateToken(userDetails);
+
             LogInResp resp = new LogInResp();
             resp.setToken(token);
             resp.setStatus(AuthStatus.SUCCESSFUL);

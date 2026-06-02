@@ -14,6 +14,6 @@ CREATE TABLE user_model (
 
     CONSTRAINT pk_user_model PRIMARY KEY (merchant_id),
     CONSTRAINT uk_user_model_username UNIQUE (username),
-    CONSTRAINT chk_user_role
-        CHECK (role IN ('ROLE_ADMIN', 'ROLE_MERCHANT'))
+--      CONSTRAINT chk_user_role
+--           CHECK (role IN ('ROLE_ADMIN', 'ROLE_MERCHANT'))
 );

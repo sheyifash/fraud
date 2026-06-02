@@ -13,6 +13,7 @@ public class RegistrationMapper {
                 .message(user.getMessage())
                 .role(user.getRole())
                 .merchantName(user.getMerchantName())
+                .merchantId(user.getMerchantID())
                 .build();
     }
     public static UserModel mapToEntity(RegistrationReq request){
